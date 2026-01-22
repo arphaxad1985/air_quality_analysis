@@ -1,21 +1,40 @@
 # Air Quality Analysis
 
-## Project Overview
+### Project Overview
 Analysis of air pollution patterns and meteorological relationships across multiple cities.
 
-## Project Structure
+### Project Overview
+
+This project analyses air quality and weather data across multiple US cities to achieve three objectives:  
+
+1. **Monitoring and Drawing Insights:** Understand patterns, trends, and variability in weather and air quality data.  
+2. **Clustering Weather Regimes and Air Quality Risk Indicators:** Identify distinct regimes of environmental conditions and associated pollution levels using unsupervised learning.  
+3. **Prediction of Engineered AQI Risk Levels:** Build a multiclass classifier to predict Air Quality Index (AQI) risk categories (Good → Hazardous).  
+
+The analysis combines statistical methods, exploratory data analysis (EDA), and machine learning techniques to provide actionable insights for environmental monitoring and predictive modeling.
+
+---
+
+### Project Setup
+
+- **Environment Isolation:**  
+  A dedicated virtual environment (`airquality_env`) was created to ensure package compatibility and reproducibility. All dependencies such as `pandas`, `numpy`, `plotly`, `scikit-learn` were installed in this environment.  
+
+
+### Project Structure
 - `notebooks/`: Jupyter notebooks for analysis
 - `datasets/`: Processed air quality and weather data
 - `dashboard/`: Interactive dashboard files
 - `figures/`: Generated visualizations and plots
 - `models/`: Machine learning models and results
 - `presentations/`: Presentation materials
+- `README/`: Project overview and documentation
 
-## Data Sources and variables
+### Data Sources and variables
 - Air Quality: Open-Meteo API
 - Weather forecast: Open-Meteo API
 
-## Variables
+### Variables
 
 ## Air Quality Measurements
 | Variable | Unit | Description | Health Relevance |
@@ -29,7 +48,7 @@ Analysis of air pollution patterns and meteorological relationships across multi
 | `carbon_dioxide` | ppm | Greenhouse gas | Climate indicator, indoor air quality |
 | `us_aqi` | index (0-500) | Composite air quality index | Overall health risk assessment |
 
-## Weather & Meteorological Variables
+### Weather & Meteorological Variables
 | Variable | Unit | Description | Environmental Relevance |
 |----------|------|-------------|------------------------|
 | `temperature_2m` | °C | Air temperature at 2m height | Pollution formation rates, dispersion |
@@ -48,7 +67,7 @@ Analysis of air pollution patterns and meteorological relationships across multi
 
 *Data sourced from Open-Meteo Air Quality API*
 
-## Cities Analyzed
+### Cities Analyzed
 1. Los Angeles, California
 2. Sacramento, California
 3. Detroit, Michigan
@@ -56,16 +75,36 @@ Analysis of air pollution patterns and meteorological relationships across multi
 5. Cleveland, Ohio
 6. Chicago, Illinois
 
-## Analysis Period
+### Analysis Period
 November 7, 2025 - January 5, 2026
 
-## Methodological Justification by Research Objective
+### Technical Stack
+- **Python 3.10+**
+- **Libraries:** pandas, numpy, matplotlib, seaborn, scikit-learn
+- **APIs:** Open-Meteo
+- **Environment:** Conda (airquality_env)
 
+### Getting Started
+### Clone repository
+- git clone https://github.com/arphaxad1985/Air_quality_Analysis.git
+- cd Air_quality_Analysis
+
+### Create conda environment (optional)
+- conda create -n airquality_env python=3.10
+- conda activate airquality_env
+
+### Install dependencies
+- pip install pandas numpy matplotlib seaborn scikit-learn jupyter
+
+### Run notebooks
+- jupyter notebook notebooks/01.data_ingestion.ipynb
+
+### Methodological Justification by Research Objective
 This study applies statistical analysis and machine learning techniques in a structured manner, aligned with three research objectives: exploratory monitoring, unsupervised clustering, and supervised prediction. Each method was selected based on the nature of the data and the analytical goal.
 
 ---
 
-## Research Questions
+### Research Questions
 1. How do weather conditions (temperature, wind, humidity) affect air pollution levels?
 2. What are the spatial patterns of pollution across different cities?
 3. Which meteorological factors are strongest predictors of poor air quality?
