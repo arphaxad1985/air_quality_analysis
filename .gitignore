@@ -12,3 +12,7 @@ Notebooks/.ipynb_checkpoints/
 *.pkl
 *.h5
 *.feather
+*.pptx~
+*.tmp
+~
+Thumbs.db

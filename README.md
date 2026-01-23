@@ -1,133 +1,130 @@
 # Air Quality Analysis
 
-### Project Overview
-Analysis of air pollution patterns and meteorological relationships across multiple cities.
+## Dataset Description
 
-### Project Overview
+This project analyzes integrated air quality and meteorological data across 6 major US cities (Los Angeles, Chicago, Cleveland, Detroit, Houston, Sacramento) over a 60-day winter period (December 2023 - January 2024). The dataset contains 360 total records (6 cities × 60 days) with 15 features including pollution metrics (PM2.5, PM10, AQI, ozone, NO₂, SO₂, CO, CO₂) and weather variables (temperature, humidity, precipitation, wind speed, pressure).
 
-This project analyses air quality and weather data across multiple US cities to achieve three objectives:  
+The dataset is well-suited for this analysis with a compact size of approximately 2MB (far below the 100GB repository limit), providing sufficient temporal depth for pattern identification while remaining computationally efficient. The winter timeframe captures cold weather pollution patterns, and the geographic diversity across different US regions enables comparative analysis of urban air quality under varying climatic and industrial conditions. Key features include daily measurements with no missing values, standardized units across all cities, and integration of both pollution and meteorological parameters for comprehensive environmental analysis.
 
-1. **Monitoring and Drawing Insights:** Understand patterns, trends, and variability in weather and air quality data.  
-2. **Clustering Weather Regimes and Air Quality Risk Indicators:** Identify distinct regimes of environmental conditions and associated pollution levels using unsupervised learning.  
-3. **Prediction of Engineered AQI Risk Levels:** Build a multiclass classifier to predict Air Quality Index (AQI) risk categories (Good → Hazardous).  
+## Business Requirements
 
-The analysis combines statistical methods, exploratory data analysis (EDA), and machine learning techniques to provide actionable insights for environmental monitoring and predictive modeling.
+This project analyzes air quality across six US cities to support regulatory compliance, public health protection, and urban planning. It enables stakeholders to monitor pollution levels, identify exceedances of WHO and EPA standards, and develop targeted interventions to reduce health risks and avoid regulatory penalties.
 
----
+Key requirements include integrating air quality and weather data to identify pollution patterns, providing comparative analysis between cities to highlight best practices, and generating actionable insights for evidence-based decision-making. The system must deliver real-time monitoring, automated reporting, and scalable analysis capabilities.
 
-### Project Setup
+Success will be measured by improved pollution forecasting, identification of high-risk periods for vulnerable populations, and data-driven policy recommendations that lead to measurable air quality improvements across the studied urban centers.
 
-- **Environment Isolation:**  
-  A dedicated virtual environment (`airquality_env`) was created to ensure package compatibility and reproducibility. All dependencies such as `pandas`, `numpy`, `plotly`, `scikit-learn` were installed in this environment.  
+## Hypotheses and How to Validate
 
+1. **Air pollutant concentrations follow a given distribution**  
+   The first hypothesis focuses on understanding patterns, variability, and trends in weather and air quality data. Descriptive statistics, including the mean, median, standard deviation, and quartiles, are used to summarise central tendency and dispersion.
 
-### Project Structure
-- `notebooks/`: Jupyter notebooks for analysis
-- `datasets/`: Processed air quality and weather data
-- `dashboard/`: Interactive dashboard files
-- `figures/`: Generated visualizations and plots
-- `models/`: Machine learning models and results
-- `presentations/`: Presentation materials
-- `README/`: Project overview and documentation
+2. **Weather's effect can be used in Clustering Weather/Air Regimes**  
+   K-Means clustering is employed to group observations based on similarity in meteorological conditions and air quality indicators. Because K-Means requires the number of clusters to be specified in advance, cluster validation techniques are applied. The elbow method is used to examine within-cluster variance across different values of k, while the silhouette score is used to assess cluster cohesion and separation.
 
-### Data Sources and variables
-- Air Quality: Open-Meteo API
-- Weather forecast: Open-Meteo API
+3. **Weather-driven patterns can be used to predict Engineered AQI Risk Levels**  
+   Supervised multiclass machine learning was applied to test this hypothesis.
 
-### Variables
+## Project Plan
 
-## Air Quality Measurements
-| Variable | Unit | Description | Health Relevance |
-|----------|------|-------------|------------------|
-| `pm2_5` | µg/m³ | Fine particulate matter (≤2.5µm) | Penetrates lungs, cardiovascular effects |
-| `pm10` | µg/m³ | Coarse particulate matter (≤10µm) | Respiratory irritation, asthma |
-| `carbon_monoxide` | µg/m³ | Incomplete combustion gas | Reduces blood oxygen capacity |
-| `sulphur_dioxide` | µg/m³ | Fossil fuel combustion | Respiratory irritant, acid rain precursor |
-| `ozone` | µg/m³ | Secondary photochemical pollutant | Lung function impairment, asthma trigger |
-| `nitrogen_dioxide` | µg/m³ | High-temperature combustion | Airway inflammation, asthma exacerbation |
-| `carbon_dioxide` | ppm | Greenhouse gas | Climate indicator, indoor air quality |
-| `us_aqi` | index (0-500) | Composite air quality index | Overall health risk assessment |
+To help plan we used a GitHub project planning board which can be found [here]. The project board gave a structured approach to planning that allowed us to identify the steps and the priority that we should give them.
 
-### Weather & Meteorological Variables
-| Variable | Unit | Description | Environmental Relevance |
-|----------|------|-------------|------------------------|
-| `temperature_2m` | °C | Air temperature at 2m height | Pollution formation rates, dispersion |
-| `relative_humidity_2m` | % | Relative humidity at 2m height | Aerosol formation, pollutant lifetime |
-| `precipitation` | mm | Rainfall/snowfall amount | Wet deposition, pollution scavenging |
-| `wind_speed_10m` | m/s | Wind speed at 10m height | Pollutant transport and dispersion |
-| `surface_pressure` | hPa | Atmospheric pressure at surface | Vertical mixing, pollution trapping |
-| `city` | text | Location name | Geographic context, urban vs rural |
-| `country` | text | Country code | Regional air quality patterns |
-| `lat` | degrees | Latitude coordinate | Spatial analysis, climate zone |
-| `lon` | degrees | Longitude coordinate | Spatial analysis, transport patterns |
+To ideate hypotheses we used a mixture of EDA, literature review and prompts from Co-pilot.
 
-### Location Metadata
-- `city`, `country`: Measurement location
-- `lat`, `lon`: Geographic coordinates
+Data was collected using APIs from Open-Meteo website, processed in Jupyter notebook, analyzed using statistical tests in Python and interpreted using a mix of literature review and generative AI.
 
-*Data sourced from Open-Meteo Air Quality API*
+## The Rationale to Map the Business Requirements to the Data Visualisations
 
-### Cities Analyzed
-1. Los Angeles, California
-2. Sacramento, California
-3. Detroit, Michigan
-4. Houston, Texas
-5. Cleveland, Ohio
-6. Chicago, Illinois
+1. **Interactive Plotly Distribution Plots**  
+   The first plot is an interactive Plotly distribution plot of all numeric variables of air quality. The intention was to have a view of the distribution patterns, skewness, etc.
 
-### Analysis Period
-November 7, 2025 - January 5, 2026
+2. **Mean Annual PM2.5 Concentrations by City**  
+   This plot compares mean annual PM2.5 concentrations by city against WHO and US EPA air quality standards. This was to provide a comparison of the main pollutant across the cities.
 
-### Technical Stack
-- **Python 3.10+**
-- **Libraries:** pandas, numpy, matplotlib, seaborn, scikit-learn
-- **APIs:** Open-Meteo
-- **Environment:** Conda (airquality_env)
+3. **Mean AQI Across Cities**  
+   This visualization shows mean AQI across the cities. AQI is an index that is calculated and used as an indicator.
 
-### Getting Started
-### Clone repository
-- git clone https://github.com/arphaxad1985/Air_quality_Analysis.git
-- cd Air_quality_Analysis
+4. **Time Series Plots**  
+   The next two visualizations are time series plots demonstrating levels of both AQI and PM2.5 by time across cities.
 
-### Create conda environment (optional)
-- conda create -n airquality_env python=3.10
-- conda activate airquality_env
+## Analysis Techniques Used
 
-### Install dependencies
-- pip install pandas numpy matplotlib seaborn scikit-learn jupyter
+- **Data cleaning in pandas using a Jupyter Notebook** gave a structured workflow that allows one to follow steps.
+- **EDA visualizations in Python** allow data exploration with a wide range of visualization libraries.
+- **Generative AI** specifically Co-pilot was used for hypothesis ideation, code debugging, code generation and storytelling.
+- **Scikit-Learn** was used for machine learning as it's a relatively easy-to-use library for machine learning tasks.
+- **Git** was used for version control.
 
-### Run notebooks
-- jupyter notebook notebooks/01.data_ingestion.ipynb
+## Ethical Considerations
 
-### Methodological Justification by Research Objective
-This study applies statistical analysis and machine learning techniques in a structured manner, aligned with three research objectives: exploratory monitoring, unsupervised clustering, and supervised prediction. Each method was selected based on the nature of the data and the analytical goal.
+**Data Attribution:** All meteorological and air quality data must be properly attributed to Open-Meteo under their CC BY 4.0 license, with clear disclosure of model limitations and uncertainties.
 
----
+**Public Responsibility:** Health advisories based on predictions must avoid alarmist language, include uncertainty estimates, and never replace official emergency warnings or medical advice.
 
-### Research Questions
-1. How do weather conditions (temperature, wind, humidity) affect air pollution levels?
-2. What are the spatial patterns of pollution across different cities?
-3. Which meteorological factors are strongest predictors of poor air quality?
-4. How do pollution episodes correlate with specific weather regimes?
+**Algorithmic Fairness:** Geographic biases in data resolution must be acknowledged, ensuring transparency about varying accuracy across regions and avoiding stigmatization of specific communities.
 
-### Objective 1: Monitoring and Exploratory Insights
+## Dashboard Design
 
-The first objective focuses on understanding patterns, variability, and trends in weather and air quality data. Descriptive statistics, including the mean, median, standard deviation, and quartiles, are used to summarise central tendency and dispersion. These measures provide baseline environmental conditions and highlight variability across time and locations.
+**Main Page: Air Quality Dashboard**  
+Has side panel with 5 tabs for all other pages. Main content includes tabs of the other pages.
 
-Distribution analysis using boxplots and summary statistics indicates that several variables (e.g. PM2.5, precipitation, and wind speed) are skewed and deviate from normality. This behaviour is typical of environmental data, which is influenced by episodic events and physical constraints. A Shapiro–Wilk normality test is used to formally assess this assumption.
+**Overview Page**  
+Main content includes dataset preview, basic statistics, and fundamental visualizations. Side panel has tabs for all pages.
 
-Correlation analysis is conducted using Spearman’s rank correlation coefficient. This non-parametric approach is selected because it does not assume normality and is suitable for identifying monotonic relationships between environmental variables. Correlation analysis at this stage is exploratory and is used to support interpretation rather than infer causality.
+**Insights Page**  
+Has city comparisons, detailed analysis, and AQI health guidelines. Side panel has all pages tabs, filter settings for selecting city comparison by the metric.
 
----
+**Monitoring Page**  
+Has real-time trends, correlations, and city-level monitoring.
 
-### Objective 2: Clustering Weather Regimes and Air Quality Risk Indicators
+**Predictions Page**  
+Has atmospheric regime analysis and AQI risk forecasting.
 
-The second objective aims to identify distinct weather–air quality regimes using unsupervised learning. Prior to clustering, continuous variables are scaled to ensure that differences in magnitude do not disproportionately influence distance-based algorithms.
+## Unfixed Bugs
 
-K-Means clustering is employed to group observations based on similarity in meteorological conditions and air quality indicators. Because K-Means requires the number of clusters to be specified in advance, cluster validation techniques are applied. The elbow method is used to examine within-cluster variance across different values of k, while the silhouette score is used to assess cluster cohesion and separation.
+1. **Multiclass prediction model was underfitting**, even though I used GridCV and hyperparameter tuning to get ExtraTrees classifier and n_components to 20. Needs more time for refining.
 
-These validation measures do not constitute hypothesis testing but provide statistical support for selecting an appropriate number of clusters. Once clusters are defined, cluster profiling is performed using descriptive statistics to interpret the environmental and air quality characteristics of each regime.
+2. **Streamlit deployment challenge** with tracking files while online. First page shows loaded dataframe but prediction page gives error of having wrong dataframe with just 2 features.
 
----
+## Development Roadmap
 
-### Objective 3: Multiclass Prediction of Air Quality Risk Levels
+1. The LMS material on K-Means clustering had a few errors and it heavily jeopardized my progress. At one point it referred to `df_elbows` instead of `df_analysis`.
+
+2. Instead of training and fitting the data during clustering, the method just trains and gives a label which is subsequently used for supervised training as a label for metrics. Separate prediction on this cluster should have been used to get cluster IDs instead of label to enable smooth pipeline.
+
+## Deployment
+
+The app can be found at: https://arphaxad1985-air-quality-analysis-dashboardair-quality-6oh1ha.streamlit.app/
+
+## Main Data Analysis Libraries
+
+- pandas
+- numpy
+- matplotlib
+- seaborn
+- scikit-learn
+- jupyter
+
+## AI Tools
+
+- Co-Pilot
+- Google Search with AI responses
+
+## Credits
+
+- **Code Institute**: https://learn.codeinstitute.net/ and GitHub: https://github.com/Code-Institute-Solutions/da-README-template, https://github.com/Code-Institute-Org/data-analytics-template
+- **CoPilot** for code correction, generation utilizing various prompts
+
+## Content and Media
+
+- **Dataset**: https://open-meteo.com
+- **Instructions and project templates**: Code Institute https://learn.codeinstitute.net/
+
+## Media
+
+- The photos used on the home and sign-up page are from open-source sites
+- The images used for PowerPoint presentation were taken from Leonardo.ai, an open-source site
+
+## Acknowledgement
+
+My appreciation to everyone who supported me during this process.
