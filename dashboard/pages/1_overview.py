@@ -1,0 +1,100 @@
+import streamlit as st
+import pandas as pd
+import matplotlib.pyplot as plt
+
+st.set_page_config(page_title="Overview", layout="wide")
+
+st.title(" Overview")
+st.markdown("Dataset preview, basic statistics, and fundamental visualizations")
+
+@st.cache_data
+def load_data():
+    return pd.read_csv("../datasets/dashboard_df.csv")
+
+df = load_data()
+
+# Dataset Preview
+st.header("Dataset Preview")
+with st.expander("View Full Dataset", expanded=False):
+    st.dataframe(df, use_container_width=True)
+    
+# Basic Statistics
+st.header("Basic Statistics")
+col1, col2 = st.columns([1, 2])
+
+with col1:
+    st.subheader("Quick Stats")
+    stats_data = {
+        "Metric": ["Total Records", "Cities", "Date Range", "Avg AQI", "Avg Temp", "Avg PM2.5"],
+        "Value": [
+            len(df),
+            df["city"].nunique(),
+            f"{df['date_day'].min()[:10]} to {df['date_day'].max()[:10]}",
+            f"{df['us_aqi'].mean():.1f}",
+            f"{df['temperature_2m'].mean():.1f}°C",
+            f"{df['pm2_5'].mean():.1f} µg/m³"
+        ]
+    }
+    st.table(pd.DataFrame(stats_data))
+
+with col2:
+    st.subheader("Numerical Summary")
+    st.dataframe(df.describe(), use_container_width=True)
+
+# Basic Visualizations
+st.header("Basic Visualizations")
+
+# AQI Distribution
+st.subheader("Average Air Quality Index (AQI) by City")
+city_aqi_mean = df.groupby("city")["us_aqi"].mean().sort_values(ascending=False)
+
+# Create plot with matplotlib
+fig, ax = plt.subplots(figsize=(12, 6))
+colors = ['red' if val > 100 else 'orange' if val > 50 else 'green' 
+          for val in city_aqi_mean.values]
+bars = ax.bar(city_aqi_mean.index, city_aqi_mean.values, color=colors, edgecolor='black')
+
+ax.axhline(y=50, color='blue', linestyle='--', linewidth=2, 
+           label='Good Air Quality (AQI ≤ 50)')
+ax.axhline(y=100, color='orange', linestyle='--', linewidth=2, 
+           label='Moderate (AQI ≤ 100)', alpha=0.5)
+
+for bar in bars:
+    height = bar.get_height()
+    ax.text(bar.get_x() + bar.get_width()/2., height + 1,
+            f'{height:.1f}', ha='center', va='bottom', fontsize=9)
+
+ax.set_ylabel('Mean US AQI')
+ax.set_xlabel('City')
+ax.set_xticklabels(city_aqi_mean.index, rotation=45, ha='right')
+ax.legend()
+ax.grid(True, alpha=0.3, axis='y')
+plt.tight_layout()
+
+st.pyplot(fig)
+
+# Additional simple visualizations
+col1, col2 = st.columns(2)
+
+with col1:
+    st.subheader("AQI Distribution")
+    fig2, ax2 = plt.subplots(figsize=(8, 4))
+    ax2.hist(df['us_aqi'], bins=30, color='skyblue', edgecolor='black', alpha=0.7)
+    ax2.set_xlabel('US AQI')
+    ax2.set_ylabel('Frequency')
+    ax2.axvline(x=50, color='red', linestyle='--', label='Good Threshold')
+    ax2.axvline(x=100, color='orange', linestyle='--', label='Moderate Threshold')
+    ax2.legend()
+    ax2.grid(True, alpha=0.3)
+    st.pyplot(fig2)
+
+with col2:
+    st.subheader("Temperature vs AQI")
+    fig3, ax3 = plt.subplots(figsize=(8, 4))
+    scatter = ax3.scatter(df['temperature_2m'], df['us_aqi'], 
+                         c=df['us_aqi'], cmap='RdYlGn_r', alpha=0.6, s=20)
+    ax3.set_xlabel('Temperature (°C)')
+    ax3.set_ylabel('US AQI')
+    ax3.grid(True, alpha=0.3)
+    plt.colorbar(scatter, ax=ax3, label='AQI')
+    st.pyplot(fig3)
